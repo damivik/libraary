@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" th:replace="~{fragments/layout :: layout(~{::title}, ~{::header}, ~{::main})}">
+
+<head>
+	<title th:text="book.title"></title>
+</head>
+
+<body>
+	<header th:replace="fragments/header :: header"></header>
+
+	<main class="container">
+		<h1 th:text="${book.title}"></h1>
+		<hr>
+
+		<div class="d-flex flex-row bd-highlight mb-3 list-group-item">
+			<a href=""><img th:src="${book.coverImage}" width="80"></a>
+			<div class="d-flex flex-column bd-highlight mb-3 p-2">
+				<a class="p-1 fw-bold" href="#" th:text="${book.title}">Title</a>
+				<a class="p-1" href="#" th:text="${book.getAuthorsAsString}">Title</a>
+
+			</div>
+		</div>
+
+	</main>
+
+</body>
+
+</html>

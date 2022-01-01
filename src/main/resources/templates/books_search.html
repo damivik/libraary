@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" th:replace="~{fragments/layout :: layout(~{::title}, ~{::header}, ~{::main})}">
+
+<head>
+	<title>Search results</title>
+</head>
+
+<body>
+	<header th:replace="fragments/header :: header"></header>
+
+	<main class="container">
+		<h1 th:text="${books.size} + ' Search results'"></h1>
+		<hr>
+
+		<!-- books list start -->
+		<div class="list-group list-group-flush mt-3">
+			<div class="d-flex flex-row bd-highlight mb-3 list-group-item" th:each="book : ${books}">
+				<a href=""><img th:src="${book.coverImage}" width="80"></a>
+				<div class="d-flex flex-column bd-highlight mb-3 p-2">
+					<a class="p-1 fw-bold" href="#" th:text="${book.title}">Title</a>
+					<a class="p-1" href="#" th:text="${book.getAuthorsAsString}">Title</a>
+					<div>
+						<button class="btn btn-success btn-add-to-shelf" data-bs-toggle="modal"
+							data-bs-target="#shelfListModal" th:id="${book.id}">
+							Add to shelf
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- books list end -->
+
+		<!-- Modal -->
+		<div class="modal fade" id="shelfListModal" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Bookshelves</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="list-group">
+							<button class="btn btn-lg btn-primary list-group-item list-group-item-action btn-shelves" type="submit"
+								th:text="${shelf.name}" th:each="shelf : ${bookshelves}" th:id="${shelf.id}">
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+		</div>
+	</main>
+
+</body>
+
+</html>

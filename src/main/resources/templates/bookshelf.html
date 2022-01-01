@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en" th:replace="~{fragments/layout :: layout(~{::title}, ~{::header}, ~{::main})}">
+
+<head>
+	<title th:text="'My books - ' + ${bookshelf.name}"></title>
+</head>
+
+<body>
+	<header th:replace="fragments/header :: header"></header>
+
+	<main class="container">
+		<div class="d-flex justify-content-between">
+			<h1 th:text="${bookshelf.name}">Bookshelf</h1>
+			<div class="dropdown">
+				<button class="btn btn-secondary dropdown-toggle" type=button data-bs-toggle="dropdown"><i
+						class="bi-gear"></i>
+				</button>
+				<ul class="dropdown-menu">
+					<li>
+						<button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#renameShelfModal">
+							Rename bookshelf
+						</button>
+					</li>
+					<li>
+						<button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#clearShelfModal">
+							Clear bookshelf
+						</button>
+					</li>
+					<li>
+						<button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteShelfModal">
+							Delete bookshelf
+						</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<hr>
+
+		<!-- rename bookshelf modal start -->
+		<form class="modal fade" tabindex="-1" id="renameShelfModal"
+			th:action="@{'/bookshelves/' + ${bookshelf.id} + '/rename'}" method="POST">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<p class="modal-title">Rename shelf</p>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body form-floating">
+						<input type="text" class="form-control" id="name" name="name" th:value="${bookshelf.name}">
+						<label for="name">Name</label>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary">Rename</button>
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- rename bookshelf modal end -->
+
+		<!-- delete bookshelf confirmation modal start -->
+		<form class="modal fade" tabindex="-1" id="deleteShelfModal"
+			th:action="@{'/bookshelves/' + ${bookshelf.id} + '/delete'}" method="POST">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<p class="modal-title">Rename shelf</p>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>
+							Are you sure you want to permanently delete this bookshelf and all the books on it?
+							This action can't be reversed.
+						</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary">Delete</button>
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- delete bookshelf confirmation modal end -->
+
+		<!-- clear bookshelf confirmation modal start -->
+		<form class="modal fade" tabindex="-1" id="clearShelfModal"
+			th:action="@{'/bookshelves/' + ${bookshelf.id} + '/clear'}" method="POST">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<p class="modal-title">Clear shelf</p>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>
+							Are you sure you want to remove all the books on this bookshelf?
+							This action can't be reversed.
+						</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary">Clear bookshelf</button>
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- clear bookshelf confirmation modal end -->
+
+		<!-- books list start -->
+		<div class="list-group list-group-flush mt-3">
+			<div class="d-flex flex-row bd-highlight mb-3 list-group-item" th:each="book : ${bookshelf.books}">
+				<a href=""><img th:src="${book.coverImage}" width="80"></a>
+				<div class="d-flex flex-column bd-highlight mb-3 p-2">
+					<a class="p-1 fw-bold" href="#" th:text="${book.title}">Title</a>
+					<a class="p-1" href="#" th:text="${book.getAuthorsAsString}">Title</a>
+					<div>
+						<form th:action="@{'/bookshelves/' + ${bookshelf.id} + '/removeBook'}" method="POST">
+							<input type="hidden" name="bookId" th:value=${book.id}>
+							<button class="btn btn-success">
+								Remove
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- books list end -->
+	</main>
+
+</body>
+
+</html>
